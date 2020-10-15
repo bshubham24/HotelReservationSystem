@@ -48,8 +48,7 @@ public class Executor {
 			}
 		}
 		String cheapestHotelBestRated = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating();
-		System.out
-				.println("Hotel:Rating:Price:Customer = " + cheapestHotelBestRated + ":" + customer.getCustomerType());
+		System.out.println("Hotel:Rating:Price:Customer= " + cheapestHotelBestRated + ":" + customer.getCustomerType());
 
 	}
 }
