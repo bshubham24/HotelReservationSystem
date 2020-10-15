@@ -57,19 +57,32 @@ public class HotelReservation {
 		long totalDays = getTotalNoOfDays(startDate1, endDate1);
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
-		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
+		List<Long> costOfHotelList = listOfHotels.stream().map(hotel -> {
 			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
 		}).collect(Collectors.toList());
-		long minRent = Collections.min(hotelRentList);
+		long minCost = Collections.min(costOfHotelList);
 		List<Hotel> cheapHotelList = listOfHotels.stream().filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
-				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent).collect(Collectors.toList());
+				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minCost).collect(Collectors.toList());
 		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
 		for (Hotel name : cheapHotelList) {
 			if (name.getRating() == bestRatingHotel.getRating()) {
-				return name.getHotelName() + ":" + name.getRating() + ":" + minRent;
+				return name.getHotelName() + ":" + name.getRating() + ":" + minCost;
 			}
 		}
 		return null;
+	}
+
+	public String findBestRatedHotel(String startDate1, String endDate1) throws ParseException {
+		Hotel bestRatedHotel = listOfHotels.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
+		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+		long costOfHotel = CostOfHotel(bestRatedHotel, totalWeekendDays, totalWeekDays);
+		return bestRatedHotel.getHotelName() + ":" + costOfHotel;
+	}
+
+	public long CostOfHotel(Hotel hotel, long weekDays, long weekendDays) {
+		return (hotel.getWeekDayRateRegCus() * weekDays + hotel.getWeekEndRateRegCus() * weekendDays);
 	}
 
 	public long getTotalWeekendDays() throws ParseException {
