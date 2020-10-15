@@ -52,6 +52,26 @@ public class HotelReservation {
 		return cheapHotelList;
 	}
 
+	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating(String startDate1, String endDate1)
+			throws ParseException {
+		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
+			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
+		}).collect(Collectors.toList());
+		long minRent = Collections.min(hotelRentList);
+		List<Hotel> cheapHotelList = listOfHotels.stream().filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
+				+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent).collect(Collectors.toList());
+		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
+		for (Hotel name : cheapHotelList) {
+			if (name.getRating() == bestRatingHotel.getRating()) {
+				return name.getHotelName() + ":" + name.getRating() + ":" + minRent;
+			}
+		}
+		return null;
+	}
+
 	public long getTotalWeekendDays() throws ParseException {
 		long totalWeekendDays = 0;
 		Calendar startCalendar = Calendar.getInstance();

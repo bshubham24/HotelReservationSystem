@@ -8,7 +8,7 @@ public class Executor {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to Hotel Reservation System!");
 		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50);
 		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
@@ -21,9 +21,13 @@ public class Executor {
 		long totalDays = hotelReservation.getTotalNoOfDays(startDate, endDate);
 		List<String> cheapHotelList = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOffer(startDate,
 				endDate);
+		String cheapestHotelWithBestRating = hotelReservation
+				.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating(startDate, endDate);
+
 		for (String name : cheapHotelList) {
 			System.out.println("Cheapest Hotel for your stay: " + name);
 		}
+		System.out.println(cheapestHotelWithBestRating);
 
 	}
 }
