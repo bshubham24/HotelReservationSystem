@@ -10,9 +10,9 @@ import org.junit.Test;
 public class HotelReservationTest {
 	@Test
 	public void WhenHotelsAreAddedFindCheapestHotel() throws ParseException {
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
@@ -27,9 +27,9 @@ public class HotelReservationTest {
 
 	@Test
 	public void WhenHotelsAreAddedReturnSize() {
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
@@ -40,9 +40,9 @@ public class HotelReservationTest {
 
 	@Test
 	public void WhenHotelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRates() throws ParseException {
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
@@ -58,9 +58,9 @@ public class HotelReservationTest {
 
 	@Test
 	public void WhenHotelsAreAddedWithRatingsShouldPassTest() {
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
@@ -71,9 +71,9 @@ public class HotelReservationTest {
 
 	@Test
 	public void WhenHotelsAreAddedFindCheapestHotelBasedOnWeekDayAndWeekEndRatesAndBestRating() throws ParseException {
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
@@ -85,15 +85,28 @@ public class HotelReservationTest {
 
 	@Test
 	public void WhenHotelsAreAddedFindBestRatedHotel() throws ParseException {
-		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50);
-		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150);
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
 		String HotelBestRated = hotelReservation.findBestRatedHotel("11sep2020", "12sep2020");
 		assertEquals("Ridgewood:370", HotelBestRated);
+	}
+
+	@Test
+	public void WhenHotelsAreAddedWithRewardCustomerRatesShouldPassTest() {
+		Hotel hotel1 = new Hotel("Lakewood", 3, 110, 90, 80, 80);
+		Hotel hotel2 = new Hotel("Bridgewood", 4, 150, 50, 110, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 5, 220, 150, 100, 40);
+
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.addHotel(hotel1);
+		hotelReservation.addHotel(hotel2);
+		hotelReservation.addHotel(hotel3);
+		assertEquals(110, hotel2.getWeekDayRateRewardCus());
 	}
 
 }
