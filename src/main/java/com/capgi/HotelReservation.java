@@ -14,6 +14,37 @@ public class HotelReservation {
 	ArrayList<Hotel> listOfHotels = new ArrayList<Hotel>();
 	Date startDate;
 	Date endDate;
+	private String startDate1, endDate1;
+
+	public String getStartDate1() {
+		return startDate1;
+	}
+
+	public boolean setStartDate1(String startDate1) throws InputValidationException {
+		boolean check = false;
+		InputValidation inputValidation = new InputValidation();
+		check = inputValidation.dateValidation(startDate1);
+		if (check)
+			this.startDate1 = startDate1;
+		else
+			throw new InputValidationException("Enter proper checkin date");
+		return check;
+	}
+
+	public String getEndDate1() {
+		return endDate1;
+	}
+
+	public boolean setEndDate1(String endDate1) throws InputValidationException {
+		boolean check = false;
+		InputValidation inputValidation = new InputValidation();
+		check = inputValidation.dateValidation(endDate1);
+		if (check)
+			this.endDate1 = endDate1;
+		else
+			throw new InputValidationException("Enter proper checkout date");
+		return check;
+	}
 
 	public void addHotel(Hotel obj) {
 		listOfHotels.add(obj);
@@ -23,9 +54,9 @@ public class HotelReservation {
 		return listOfHotels.size();
 	}
 
-	public long getTotalNoOfDays(String startDate1, String endDate1) throws ParseException {
-		startDate = new SimpleDateFormat("ddMMMyyyy").parse(startDate1);
-		endDate = new SimpleDateFormat("ddMMMyyyy").parse(endDate1);
+	public long getTotalNoOfDays() throws ParseException {
+		startDate = new SimpleDateFormat("ddMMMyyyy").parse(getStartDate1());
+		endDate = new SimpleDateFormat("ddMMMyyyy").parse(getEndDate1());
 		long TotalNoOfDays = 1 + (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24;
 		return TotalNoOfDays;
 	}
@@ -35,9 +66,8 @@ public class HotelReservation {
 		return cheapestHotel;
 	}
 
-	public List<String> findCheapestHotelBasedOnWeekEndAndWeekDaysOffer(String startDate1, String endDate1)
-			throws ParseException {
-		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+	public List<String> findCheapestHotelBasedOnWeekEndAndWeekDaysOffer() throws ParseException {
+		long totalDays = getTotalNoOfDays();
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
 		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
@@ -52,9 +82,8 @@ public class HotelReservation {
 		return cheapHotelList;
 	}
 
-	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating(String startDate1, String endDate1)
-			throws ParseException {
-		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating() throws ParseException {
+		long totalDays = getTotalNoOfDays();
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
 		List<Long> costOfHotelList = listOfHotels.stream().map(hotel -> {
@@ -72,9 +101,9 @@ public class HotelReservation {
 		return null;
 	}
 
-	public String findBestRatedHotel(String startDate1, String endDate1) throws ParseException {
+	public String findBestRatedHotel() throws ParseException {
 		Hotel bestRatedHotel = listOfHotels.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
-		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalDays = getTotalNoOfDays();
 		long totalWeekendDays = getTotalWeekendDays();
 		long totalWeekDays = totalDays - totalWeekendDays;
 		long costOfHotel = CostOfHotel(bestRatedHotel, totalWeekendDays, totalWeekDays);
@@ -83,6 +112,29 @@ public class HotelReservation {
 
 	public long CostOfHotel(Hotel hotel, long weekDays, long weekendDays) {
 		return (hotel.getWeekDayRateRegCus() * weekDays + hotel.getWeekEndRateRegCus() * weekendDays);
+	}
+
+	public String findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRatingForRewardCustomer()
+			throws ParseException {
+		long totalDays = getTotalNoOfDays();
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+		List<Long> costOfHotelList = listOfHotels.stream().map(hotel -> {
+			return (hotel.getWeekDayRateRewardCus() * totalWeekDays
+					+ hotel.getWeekEndRateRewardCus() * totalWeekendDays);
+		}).collect(Collectors.toList());
+		long minCost = Collections.min(costOfHotelList);
+		List<Hotel> cheapHotelList = listOfHotels.stream()
+				.filter(hotel -> hotel.getWeekDayRateRewardCus() * totalWeekDays
+						+ hotel.getWeekEndRateRewardCus() * totalWeekendDays == minCost)
+				.collect(Collectors.toList());
+		Hotel bestRatingHotel = cheapHotelList.stream().max(Comparator.comparing(Hotel::getRating)).orElse(null);
+		for (Hotel name : cheapHotelList) {
+			if (name.getRating() == bestRatingHotel.getRating()) {
+				return name.getHotelName() + ":" + name.getRating() + ":" + minCost;
+			}
+		}
+		return null;
 	}
 
 	public long getTotalWeekendDays() throws ParseException {
