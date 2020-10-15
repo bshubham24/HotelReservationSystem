@@ -14,10 +14,11 @@ public class Executor {
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
 		hotelReservation.addHotel(hotel3);
+
 		boolean check = false;
 		while (!check) {
 			try {
-				System.out.println("Enter the check in date in proper format(ddMMMyyyy)");
+				System.out.println("Enter the checkin date in proper format(ddMMMyyyy)");
 				String startDate = sc.nextLine();
 				check = hotelReservation.setStartDate1(startDate);
 			} catch (InputValidationException e) {
@@ -28,7 +29,7 @@ public class Executor {
 		while (!check) {
 
 			try {
-				System.out.println("Enter the check out date in proper format(ddMMMyyyy)");
+				System.out.println("Enter the checkout date in proper format(ddMMMyyyy)");
 				String endDate = sc.nextLine();
 				check = hotelReservation.setEndDate1(endDate);
 			} catch (InputValidationException e) {
