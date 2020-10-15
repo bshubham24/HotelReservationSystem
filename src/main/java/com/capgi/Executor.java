@@ -29,5 +29,8 @@ public class Executor {
 		}
 		System.out.println(cheapestHotelWithBestRating);
 
+		String bestRatedHotel = hotelReservation.findBestRatedHotel(startDate, endDate);
+		System.out.println("Best Rated Hotel:Price = " + bestRatedHotel);
+
 	}
 }
