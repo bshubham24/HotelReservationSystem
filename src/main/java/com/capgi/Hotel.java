@@ -2,14 +2,17 @@ package com.capgi;
 
 public class Hotel {
 	private String hotelName;
+	private int rating;
 	private int weekEndRateRegCus;
 	private int weekDayRateRegCus;
 
-	public Hotel(String hotelName, int weekDayRateRegCus, int weekEndRateRegCus) {
+	public Hotel(String hotelName, int rating, int weekDayRateRegCus, int weekEndRateRegCus) {
 		super();
 		this.hotelName = hotelName;
-		this.weekDayRateRegCus = weekDayRateRegCus;
+		this.rating = rating;
 		this.weekEndRateRegCus = weekEndRateRegCus;
+		this.weekDayRateRegCus = weekDayRateRegCus;
+
 	}
 
 	public String getHotelName() {
@@ -18,6 +21,14 @@ public class Hotel {
 
 	public void setHotelName(String hotelName) {
 		this.hotelName = hotelName;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	public int getWeekEndRateRegCus() {
