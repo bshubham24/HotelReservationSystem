@@ -8,10 +8,10 @@ import org.junit.Test;
 
 public class HotelReservationTest {
 	@Test
-	public void WhenHostelsAreAddedReturnSize() throws ParseException {
-		Hotel hotel1 = new Hotel("Lakewood", 110);
-		Hotel hotel2 = new Hotel("Bridgewood", 160);
-		Hotel hotel3 = new Hotel("Ridgewood", 220);
+	public void WhenHostelsAreAddedFindCheapestHotel() throws ParseException {
+		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
 
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
@@ -22,5 +22,18 @@ public class HotelReservationTest {
 		long totalCost = cheapestHotel.getWeekDayRateRegCus() * totalDays;
 		assertEquals(220, totalCost);
 		assertEquals("Lakewood", cheapestHotel.getHotelName());
+	}
+
+	@Test
+	public void WhenHostelsAreAddedReturnSize() {
+		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
+
+		HotelReservation hotelReservation = new HotelReservation();
+		hotelReservation.addHotel(hotel1);
+		hotelReservation.addHotel(hotel2);
+		hotelReservation.addHotel(hotel3);
+		assertEquals(3, hotelReservation.totalHotels());
 	}
 }

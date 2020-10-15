@@ -14,6 +14,10 @@ public class HotelReservation {
 		listOfHotels.add(obj);
 	}
 
+	public int totalHotels() {
+		return listOfHotels.size();
+	}
+
 	public long getTotalNoOfDays(String start, String end) throws ParseException {
 		Date startDate = new SimpleDateFormat("ddMMMyyyy").parse(start);
 		Date endDate = new SimpleDateFormat("ddMMMyyyy").parse(end);
@@ -29,9 +33,9 @@ public class HotelReservation {
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welcome to Hotel Reservation System!");
-		Hotel hotel1 = new Hotel("Lakewood", 110);
-		Hotel hotel2 = new Hotel("Bridgewood", 160);
-		Hotel hotel3 = new Hotel("Ridgewood", 220);
+		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
+		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
 		HotelReservation hotelReservation = new HotelReservation();
 		hotelReservation.addHotel(hotel1);
 		hotelReservation.addHotel(hotel2);
