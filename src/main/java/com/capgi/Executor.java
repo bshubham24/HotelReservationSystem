@@ -48,9 +48,9 @@ public class Executor {
 			}
 		}
 		long totalDays = hotelReservation.getTotalNoOfDays();
-		String cheapestHotelBestRated = hotelReservation
-				.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRatingForRewardCustomer();
-		System.out.println("Hotel:Rating:Price = " + cheapestHotelBestRated);
+		String cheapestHotelBestRated = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating();
+		System.out
+				.println("Hotel:Rating:Price:Customer = " + cheapestHotelBestRated + ":" + customer.getCustomerType());
 
 	}
 }
