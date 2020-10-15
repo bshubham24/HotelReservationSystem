@@ -3,12 +3,17 @@ package com.capgi;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Scanner;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class HotelReservation {
 	ArrayList<Hotel> listOfHotels = new ArrayList<Hotel>();
+	Date startDate;
+	Date endDate;
 
 	public void addHotel(Hotel obj) {
 		listOfHotels.add(obj);
@@ -18,9 +23,9 @@ public class HotelReservation {
 		return listOfHotels.size();
 	}
 
-	public long getTotalNoOfDays(String start, String end) throws ParseException {
-		Date startDate = new SimpleDateFormat("ddMMMyyyy").parse(start);
-		Date endDate = new SimpleDateFormat("ddMMMyyyy").parse(end);
+	public long getTotalNoOfDays(String startDate1, String endDate1) throws ParseException {
+		startDate = new SimpleDateFormat("ddMMMyyyy").parse(startDate1);
+		endDate = new SimpleDateFormat("ddMMMyyyy").parse(endDate1);
 		long TotalNoOfDays = 1 + (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24;
 		return TotalNoOfDays;
 	}
@@ -30,26 +35,39 @@ public class HotelReservation {
 		return cheapestHotel;
 	}
 
-	public static void main(String[] args) throws Exception {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Welcome to Hotel Reservation System!");
-		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
-		Hotel hotel2 = new Hotel("Bridgewood", 160, 60);
-		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
-		HotelReservation hotelReservation = new HotelReservation();
-		hotelReservation.addHotel(hotel1);
-		hotelReservation.addHotel(hotel2);
-		hotelReservation.addHotel(hotel3);
-		System.out.println("Enter the check in date in proper format(ddMMMyyyy)");
-		String startDate = sc.nextLine();
-		System.out.println("Enter the check out date in proper format(ddMMMyyyy)");
-		String endDate = sc.nextLine();
-		Hotel cheapestHotel = hotelReservation.findCheapestHotel();
-		long totalDays = hotelReservation.getTotalNoOfDays("10Sep2020", "11Sep2020");
-		long totalCost = cheapestHotel.getWeekDayRateRegCus() * totalDays;
+	public List<String> findCheapestHotelBasedOnWeekEndAndWeekDaysOffer(String startDate1, String endDate1)
+			throws ParseException {
+		long totalDays = getTotalNoOfDays(startDate1, endDate1);
+		long totalWeekendDays = getTotalWeekendDays();
+		long totalWeekDays = totalDays - totalWeekendDays;
+		List<Long> hotelRentList = listOfHotels.stream().map(hotel -> {
+			return (hotel.getWeekDayRateRegCus() * totalWeekDays + hotel.getWeekEndRateRegCus() * totalWeekendDays);
+		}).collect(Collectors.toList());
+		long minRent = Collections.min(hotelRentList);
+		List<String> cheapHotelList = listOfHotels.stream()
+				.filter(hotel -> hotel.getWeekDayRateRegCus() * totalWeekDays
+						+ hotel.getWeekEndRateRegCus() * totalWeekendDays == minRent)
+				.map(hotel -> hotel.getHotelName()).collect(Collectors.toList());
 
-		System.out.println("Cheapest Hotel for your stay: " + cheapestHotel.getHotelName());
-		System.out.println("Total expense: " + totalCost);
+		return cheapHotelList;
+	}
+
+	public long getTotalWeekendDays() throws ParseException {
+		long totalWeekendDays = 0;
+		Calendar startCalendar = Calendar.getInstance();
+		startCalendar.setTime(startDate);
+		Calendar endCalendar = Calendar.getInstance();
+		endCalendar.setTime(endDate);
+		for (; startCalendar.compareTo(endCalendar) <= 0; startCalendar.add(Calendar.DATE, 1)) {
+			int dayOfWeek = startCalendar.get(Calendar.DAY_OF_WEEK);
+			if (dayOfWeek == 0 || dayOfWeek == 6)
+				totalWeekendDays++;
+		}
+		return totalWeekendDays;
+	}
+
+	public static void main(String[] args) {
 
 	}
+
 }
