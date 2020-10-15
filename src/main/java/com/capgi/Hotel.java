@@ -5,10 +5,11 @@ public class Hotel {
 	private int weekEndRateRegCus;
 	private int weekDayRateRegCus;
 
-	public Hotel(String hotelName, int weekDayRateRegCus) {
+	public Hotel(String hotelName, int weekDayRateRegCus, int weekEndRateRegCus) {
 		super();
 		this.hotelName = hotelName;
 		this.weekDayRateRegCus = weekDayRateRegCus;
+		this.weekEndRateRegCus = weekEndRateRegCus;
 	}
 
 	public String getHotelName() {
