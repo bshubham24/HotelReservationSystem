@@ -47,7 +47,6 @@ public class Executor {
 				System.out.println(e.getMessage());
 			}
 		}
-		long totalDays = hotelReservation.getTotalNoOfDays();
 		String cheapestHotelBestRated = hotelReservation.findCheapestHotelBasedOnWeekEndAndWeekDaysOfferAndBestRating();
 		System.out
 				.println("Hotel:Rating:Price:Customer = " + cheapestHotelBestRated + ":" + customer.getCustomerType());
